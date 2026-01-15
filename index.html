@@ -1,91 +1,133 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>신쌤 | 치지직 스트리머</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background-color: #111827;
-      color: #e5e7eb;
-      line-height: 1.7;
+      font-family: "Pretendard", "Apple SD Gothic Neo", sans-serif;
+      background: linear-gradient(135deg, #111827, #1f2933);
+      color: #f9fafb;
     }
+
     .container {
-      max-width: 720px;
+      max-width: 900px;
       margin: 0 auto;
-      padding: 60px 20px;
+      padding: 80px 20px;
+      text-align: center;
     }
+
     h1 {
-      font-size: 36px;
+      font-size: 3rem;
       margin-bottom: 10px;
     }
-    .subtitle {
-      color: #9ca3af;
-      margin-bottom: 40px;
+
+    .badge {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: #22c55e;
+      color: #022c22;
+      font-weight: bold;
+      font-size: 0.9rem;
+      margin-bottom: 30px;
     }
-    h2 {
-      font-size: 20px;
-      margin-top: 50px;
-      margin-bottom: 15px;
-      border-bottom: 1px solid #374151;
-      padding-bottom: 8px;
-    }
-    p, li {
-      font-size: 16px;
+
+    p {
+      font-size: 1.1rem;
+      line-height: 1.7;
       color: #d1d5db;
     }
-    ul {
-      padding-left: 18px;
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-top: 50px;
     }
-    a {
-      color: #38bdf8;
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      padding: 30px;
+      backdrop-filter: blur(10px);
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+    }
+
+    .card h3 {
+      margin-bottom: 10px;
+      color: #fbbf24;
+    }
+
+    .links {
+      margin-top: 60px;
+    }
+
+    .links a {
+      display: inline-block;
+      margin: 10px;
+      padding: 14px 26px;
+      border-radius: 999px;
+      background: #2563eb;
+      color: white;
       text-decoration: none;
+      font-weight: bold;
+      transition: background 0.2s ease;
     }
-    a:hover {
-      text-decoration: underline;
+
+    .links a:hover {
+      background: #1d4ed8;
     }
+
     footer {
       margin-top: 80px;
-      font-size: 13px;
-      color: #6b7280;
+      font-size: 0.9rem;
+      color: #9ca3af;
     }
   </style>
 </head>
 <body>
-
   <div class="container">
     <h1>신쌤</h1>
-    <div class="subtitle">
-      치지직에서 활동하는 토크 & 스팀 게임 스트리머
+    <div class="badge">치지직 스트리머</div>
+
+    <p>
+      토크와 스팀 게임을 중심으로<br />
+      편안하고 솔직한 방송을 하는 스트리머
+    </p>
+
+    <div class="cards">
+      <div class="card">
+        <h3>🗣 토크</h3>
+        <p>시청자와 자유롭게 소통하는 잡담 방송</p>
+      </div>
+      <div class="card">
+        <h3>🎮 스팀 게임</h3>
+        <p>공포, 인디, 스토리 게임 위주 플레이</p>
+      </div>
+      <div class="card">
+        <h3>🦊 컨셉</h3>
+        <p>여유 있고 위트 있는 신쌤 스타일</p>
+      </div>
     </div>
 
-    <h2>소개</h2>
-    <p>
-      신쌤은 치지직 플랫폼에서 토크와 스팀 게임을 중심으로
-      시청자와 편하게 소통하는 스트리머입니다.
-      차분한 진행과 자연스러운 대화가 특징입니다.
-    </p>
-
-    <h2>방송 콘텐츠</h2>
-    <ul>
-      <li>토크 방송 – 시청자 소통, 자유로운 대화</li>
-      <li>스팀 게임 – 인디, 공포, 스토리 게임</li>
-    </ul>
-
-    <h2>채널 링크</h2>
-    <p>
-      <a href="https://chzzk.naver.com" target="_blank">
-        치지직 신쌤 채널 바로가기
-      </a>
-    </p>
+    <div class="links">
+      <a href="https://chzzk.naver.com" target="_blank">치지직 바로가기</a>
+    </div>
 
     <footer>
-      본 사이트는 팬이 자발적으로 제작한 비공식 소개 페이지이며,
-      스트리머 및 치지직과 공식적인 관련은 없습니다.
+      © 2026 신쌤 팬 페이지
     </footer>
   </div>
+</body>
+</html>
+
 
 </body>
 </html>
