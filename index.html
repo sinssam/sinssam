@@ -303,25 +303,86 @@ footer{
   }catch(e){console.error("YouTube load fail",e);}
 })();
 
-/* 관리자 / ON AIR */
-function toggleAdmin(){
-  if(prompt("관리자 비밀번호")==="1234")
-    document.getElementById("admin").style.display="block";
+/* 관리자 / ON AIR (치지직 판별 + 시간대 fallback) */
+
+// 🔴 치지직 라이브 판별 (비공식, 실패 가능)
+async function isChzzkLive() {
+  try {
+    // 신쌤 치지직 채널 ID (네가 쓰는 값으로 교체 가능)
+    const channelId = "신쌤";
+
+    // CORS 때문에 실제로는 실패할 확률 높음 → fallback 용도
+    const res = await fetch(`https://api.chzzk.naver.com/service/v1/channels/${channelId}`, {
+      cache: "no-store"
+    });
+    if (!res.ok) throw new Error("fetch fail");
+    const data = await res.json();
+    return data?.content?.openLive === true;
+  } catch (e) {
+    return null; // 판별 실패
+  }
 }
-function getStatus(){return JSON.parse(localStorage.getItem("status")||"{}")}
-function setStatus(s){localStorage.setItem("status",JSON.stringify(s))}
-function updateLive(){
-  const s=getStatus();
-  const now=new Date();
-  const auto=(now.getDay()>=1&&now.getDay()<=5&&now.getHours()==19);
-  const live=s.override??auto;
-  onAir.textContent=live?"🔴 ON AIR":"🔴 OFF AIR";
-  onAir.className=live?"onair live":"onair";
-  notice.textContent=s.notice||"";
+
+// ⏰ 평일 19:00 ~ 00:30 자동 ON AIR
+function isTimeLive() {
+  const now = new Date();
+  const day = now.getDay(); // 0=일, 1~5=평일
+  const h = now.getHours();
+  const m = now.getMinutes();
+
+  if (day < 1 || day > 5) return false; // 주말 OFF
+
+  if (h > 19 && h < 24) return true;          // 19:01~23:59
+  if (h === 19) return true;                  // 19:00~
+  if (h === 0 && m <= 30) return true;         // 00:00~00:30
+
+  return false;
 }
-setInterval(updateLive,60000);updateLive();
-function setLive(v){const s=getStatus();s.override=v;setStatus(s);updateLive();}
-function saveNotice(){const s=getStatus();s.notice=adminNotice.value;setStatus(s);updateLive();}
+
+// 관리자 override 저장
+function getStatus() {
+  return JSON.parse(localStorage.getItem("status") || "{}");
+}
+function setStatus(s) {
+  localStorage.setItem("status", JSON.stringify(s));
+}
+
+// ON AIR 업데이트
+async function updateLive() {
+  const s = getStatus();
+
+  let live;
+  if (s.override !== undefined) {
+    live = s.override; // 관리자 수동
+  } else {
+    const chzzk = await isChzzkLive();
+    live = chzzk !== null ? chzzk : isTimeLive();
+  }
+
+  onAir.textContent = live ? "🔴 ON AIR" : "🔴 OFF AIR";
+  onAir.className = live ? "onair live" : "onair";
+  notice.textContent = s.notice || "";
+}
+
+// 관리자 버튼용
+function setLive(v) {
+  const s = getStatus();
+  s.override = v;
+  setStatus(s);
+  updateLive();
+}
+
+function saveNotice() {
+  const s = getStatus();
+  s.notice = adminNotice.value;
+  setStatus(s);
+  updateLive();
+}
+
+// 최초 실행 + 1분 주기
+updateLive();
+setInterval(updateLive, 60000);
+
 
 /* 방명록 */
 function addGuest(){
