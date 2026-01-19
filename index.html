@@ -446,44 +446,26 @@ updateLive();
 setInterval(updateLive, 60000);
 
 
-/* 방명록 */
-function esc(s){
-  return s.replace(/[&<>"']/g,c=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;",
-    '"':"&quot;","'":"&#39;"
-  }[c]));
-}
+<!-- 방명록 -->
+<div class="section">
+  <h2>✍️ 방명록</h2>
 
-function addGuest(){
-  if(!gbName.value.trim() || !gbMsg.value.trim()) return;
+  <div class="box">
+    <input
+      id="gbName"
+      placeholder="닉네임 (최대 8자)"
+      maxlength="8"
+    >
+    <textarea
+      id="gbMsg"
+      placeholder="응원의 한마디를 남겨주세요 (최대 120자)"
+      maxlength="120"
+    ></textarea>
+    <button onclick="addGuest()">남기기</button>
+  </div>
 
-  const list = JSON.parse(localStorage.getItem("guestbook") || "[]");
-
-  list.unshift({
-    n: esc(gbName.value),
-    m: esc(gbMsg.value),
-    t: new Date().toLocaleDateString()
-  });
-
-  localStorage.setItem("guestbook", JSON.stringify(list));
-  gbName.value = "";
-  gbMsg.value = "";
-  renderGuest();
-}
-
-function renderGuest(){
-  const list = JSON.parse(localStorage.getItem("guestbook") || "[]");
-
-  guestbook.innerHTML = list.map(v=>`
-    <p>
-      <b>${v.n}</b>
-      <span style="color:#9ca3af;font-size:12px"> · ${v.t}</span><br>
-      ${v.m}
-    </p>
-  `).join("");
-}
-
-renderGuest();
+  <div id="guestbook" class="guest-list"></div>
+</div>
 
 
 /* 스탯 차트 */
