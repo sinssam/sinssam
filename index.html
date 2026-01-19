@@ -210,6 +210,49 @@ textarea{min-height:90px}
   <div id="onAir" class="onair">🔴 OFF AIR</div>
   <p id="notice" style="font-size:13px;color:#9ca3af"></p>
 </div>
+  <!-- 기본 소개 바로 아래에 추가 -->
+<div id="birthdayBanner" class="center" style="
+  margin-top:20px; 
+  display:none;
+  padding:12px 18px;
+  border-radius:16px;
+  background:linear-gradient(90deg,#facc15,#fcd34d);
+  color:#111827;
+  font-weight:700;
+  font-size:16px;
+  animation: bounce 1.2s infinite alternate;
+">
+  🎉 오늘은 신쌤 생일입니다! 축하해요! 🥳
+</div>
+
+<style>
+@keyframes bounce{
+  0%{transform:translateY(0);}
+  50%{transform:translateY(-6px);}
+  100%{transform:translateY(0);}
+}
+</style>
+
+<script>
+// 생일 체크 함수
+function checkBirthday(){
+  const today = new Date();
+  const month = today.getMonth() + 1; // 0~11 → 1~12
+  const day = today.getDate();
+
+  if(month === 1 && day === 21){ // 1월 21일
+    const banner = document.getElementById("birthdayBanner");
+    banner.style.display = "block";
+
+    // 배경색 살짝 변경
+    document.body.style.background = "linear-gradient(135deg,#ff9a9e,#fad0c4)";
+  }
+}
+
+// 페이지 로드 시 실행
+checkBirthday();
+</script>
+
 
 <!-- 방송 특징 -->
 <div class="section cards">
