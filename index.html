@@ -191,10 +191,12 @@ input, textarea{
 }
 textarea{min-height:90px}
 </style>
-
+</head>
+<body>
 
 <!-- 기본 소개 -->
 <div class="center">
+
   <h1>신쌤</h1>
   <div class="badge">치지직 스트리머</div>
   <p style="margin-top:18px">
@@ -236,8 +238,7 @@ textarea{min-height:90px}
   <h2>📺 대표 유튜브 영상</h2>
 
   <iframe
-    id="youtubeLatest"
-    src="https://youtu.be/hX0Zn6HlAOA?si=IEkc1pxTLqJ3NSoz"
+    src="https://www.youtube.com/embed/hX0Zn6HlAOA"
     allowfullscreen
     style="
       max-width:720px;
@@ -248,8 +249,8 @@ textarea{min-height:90px}
       border-radius:18px;
     "
   ></iframe>
-
 </div>
+
 
 
 
@@ -321,11 +322,16 @@ textarea{min-height:90px}
 <!-- 방명록 -->
 <div class="section">
   <h2>✍️ 방명록</h2>
-  <input id="gbName" placeholder="이름">
-  <textarea id="gbMsg" placeholder="메시지"></textarea>
-  <button onclick="addGuest()">남기기</button>
-  <div id="guestbook"></div>
+
+  <div class="box">
+    <input id="gbName" placeholder="닉네임 (최대 8자)" maxlength="8">
+    <textarea id="gbMsg" placeholder="응원의 한마디 (최대 120자)" maxlength="120"></textarea>
+    <button onclick="addGuest()">남기기</button>
+  </div>
+
+  <div id="guestbook" class="guest-list"></div>
 </div>
+
 
 <!-- 관리자 -->
 <div class="admin" id="admin">
@@ -353,17 +359,7 @@ textarea{min-height:90px}
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-/* 유튜브 최신 영상 자동화 */
-(async function(){
-  const channelId="UCv1eMhf8h1JRV56g-Bax-Kw";
-  try{
-    const rss=`https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
-    const res=await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rss)}`);
-    const data=await res.json();
-    const id=data.items[0].link.split("v=")[1];
-    document.getElementById("youtubeLatest").src=`https://www.youtube.com/embed/${id}`;
-  }catch(e){console.error("YouTube load fail",e);}
-})();
+
 
 /* 관리자 / ON AIR (치지직 판별 + 시간대 fallback) */
 
