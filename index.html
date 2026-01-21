@@ -196,6 +196,10 @@ textarea{min-height:90px}
 </style>
 </head>
 <body>
+  <audio id="bgm" loop preload="auto">
+  <source src="birthday.mp3" type="audio/mpeg">
+</audio>
+
 
 <div class="container">
 
@@ -253,30 +257,41 @@ textarea{min-height:90px}
 </style>
 
 <script>
-// 생일 체크 함수
 function checkBirthday(){
   const today = new Date();
-  const month = today.getMonth() + 1; // 0~11 → 1~12
+  const month = today.getMonth() + 1;
   const day = today.getDate();
 
-  if(month === 1 && day === 21){ // 1월 21일
+  const bgm = document.getElementById("bgm");
+
+  if(month === 1 && day === 21){
     const banner = document.getElementById("birthdayBanner");
     banner.style.display = "block";
+
     startBirthdayEffect();
 
+    bgm.volume = 0.35;
 
-    // 배경색 살짝 변경
-    document.body.style.background = "linear-gradient(135deg,#ff9a9e,#fad0c4)";
+    // 자동재생 차단 대응
+    bgm.play().catch(() => {
+      document.addEventListener("click", () => {
+        bgm.play().catch(()=>{});
+      }, { once:true });
+    });
+
+    document.body.style.background =
+      "linear-gradient(135deg,#ff9a9e,#fad0c4)";
+  } else {
+    bgm.pause();
+    bgm.currentTime = 0;
   }
 }
 
-// 페이지 로드 시 실행
-checkBirthday();
 function startBirthdayEffect(){
-    if(document.getElementById("birthdayEffect").children.length) return;
+  const wrap = document.getElementById("birthdayEffect");
+  if(wrap.children.length) return;
 
   const emojis = ["🎉","🎊","🥳"];
-  const wrap = document.getElementById("birthdayEffect");
 
   for(let i=0;i<20;i++){
     const span = document.createElement("span");
@@ -289,6 +304,7 @@ function startBirthdayEffect(){
   }
 }
 
+checkBirthday();
 </script>
 
 
