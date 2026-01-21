@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>신쌤 | 공식 사이트</title>
+<meta property="og:title" content="신쌤 | 치지직 스트리머">
+<meta property="og:description" content="토크 중심 소통 스트리머 신쌤 공식 사이트">
+<meta property="og:type" content="website">
 
 <style>
 body{
@@ -406,11 +409,22 @@ checkBirthday();
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 /* =====================
+   공용 유틸
+===================== */
+function escapeHTML(str){
+  return str.replace(/[&<>"']/g, m => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  }[m]));
+}
+
+/* =====================
    관리자 / ON AIR
 ===================== */
-async function isChzzkLive() {
-  return null;
-}
+
 
 function isTimeLive() {
   const now = new Date();
@@ -457,7 +471,10 @@ function saveNotice() {
 
 updateLive();
 setInterval(updateLive, 60000);
- function toggleAdmin(){
+function toggleAdmin(){
+  const pw = prompt("관리자 비밀번호");
+  if(pw !== "관리자비번") return;
+
   const admin = document.getElementById("admin");
   admin.style.display =
     admin.style.display === "block" ? "none" : "block";
@@ -465,9 +482,27 @@ setInterval(updateLive, 60000);
 
 
 
+
 /* =====================
    방명록
 ===================== */
+  const GUEST_KEY = "guestbook";
+
+function addGuestToDOM(obj){
+  const p = document.createElement("p");
+  p.innerHTML = `<b>${obj.name}</b> 
+  <span style="color:#9ca3af;font-size:12px">${obj.time}</span><br>
+  ${obj.msg}`;
+  guestbook.appendChild(p);
+}
+
+function loadGuests(){
+  const list = JSON.parse(localStorage.getItem(GUEST_KEY) || "[]");
+  list.forEach(addGuestToDOM);
+}
+
+loadGuests();
+
 function addGuest(){
   const name = gbName.value.trim();
   const msg  = gbMsg.value.trim();
@@ -484,13 +519,23 @@ function addGuest(){
     minute:"2-digit"
   });
 
-  const p = document.createElement("p");
-  p.innerHTML = `<b>${name}</b> <span style="color:#9ca3af;font-size:12px">${time}</span><br>${msg}`;
-  guestbook.prepend(p);
+  const data = {
+    name: escapeHTML(name),
+    msg: escapeHTML(msg),
+    time
+  };
+
+  const list = JSON.parse(localStorage.getItem(GUEST_KEY) || "[]");
+  list.unshift(data);
+  localStorage.setItem(GUEST_KEY, JSON.stringify(list.slice(0,30)));
+
+  guestbook.innerHTML = "";
+  loadGuests();
 
   gbName.value = "";
   gbMsg.value = "";
 }
+
 
 /* =====================
    스탯 차트
