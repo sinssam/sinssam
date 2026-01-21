@@ -270,22 +270,30 @@ function checkBirthday(){
 
     startBirthdayEffect();
 
-    bgm.volume = 0.35;
+  bgm.volume = 0.35;
 
- bgm.volume = 0.35;
+// 사용자 클릭 시에만 재생 (브라우저 정책 100% 통과)
+const clickLayer = document.createElement("div");
+clickLayer.style.position = "fixed";
+clickLayer.style.top = "0";
+clickLayer.style.left = "0";
+clickLayer.style.width = "100vw";
+clickLayer.style.height = "100vh";
+clickLayer.style.zIndex = "9999";
+clickLayer.style.cursor = "pointer";
+clickLayer.style.background = "transparent";
 
-// 1️⃣ 처음엔 음소거 상태로 재생 시도
-bgm.muted = true;
-bgm.play().catch(()=>{});
+document.body.appendChild(clickLayer);
 
-// 2️⃣ 사용자가 화면을 한 번 클릭하면
-document.addEventListener("click", () => {
-  // 음소거 해제
+clickLayer.addEventListener("click", () => {
   bgm.muted = false;
+  bgm.currentTime = 0;
+  bgm.play();
 
-  // 다시 재생
-  bgm.play().catch(()=>{});
-}, { once:true });
+  clickLayer.remove();
+});
+
+
 
 
     document.body.style.background =
